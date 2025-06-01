@@ -26,7 +26,7 @@ def find_stocks_near_levels(df, symbols):
         if symbol_data.empty:
             continue
             
-        current_price = symbol_data.iloc[-1]['Close']
+        current_price = symbol_data.iloc[-2]['Close']
         
         # Calculate support/resistance levels
         _, levels = calculate_support_resistance(df, symbol)
@@ -40,9 +40,9 @@ def find_stocks_near_levels(df, symbols):
                 
             diff_pct = abs(current_price - level) / level * 100
             
-            if diff_pct <= PROXIMITY_PCT:
+            if diff_pct <= PROXIMITY_PCT and current_price > level:
                 relation = "Near"
-                if diff_pct <= CROSSING_PCT:
+                if diff_pct <= CROSSING_PCT and current_price > level:
                     relation = "Crossing"
                 
                 # Determine if it's support or resistance
